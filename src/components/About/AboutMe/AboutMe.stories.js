@@ -1,7 +1,7 @@
 import AboutMe from "./AboutMe.vue";
 
 export default {
-  title: "View/AboutMe",
+  title: "Components/AboutMe",
   component: AboutMe,
   argTypes: {
     backgroundColor: { control: "color" },

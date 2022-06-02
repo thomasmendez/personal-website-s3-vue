@@ -1,7 +1,7 @@
 import ContactInfo from "./ContactInfo.vue";
 
 export default {
-  title: "View/ContactInfo",
+  title: "Components/ContactInfo",
   component: ContactInfo,
   argTypes: {
     backgroundColor: { control: "color" },
