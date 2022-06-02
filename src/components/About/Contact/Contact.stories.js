@@ -1,23 +1,23 @@
-import ContactInfo from "./ContactInfo.vue";
+import Contact from "./Contact.vue";
 
 export default {
-  title: "Components/ContactInfo",
-  component: ContactInfo,
+  title: "Components/Contact",
+  component: Contact,
   argTypes: {
     backgroundColor: { control: "color" },
   },
 };
 
 const Template = (args) => ({
-  components: { ContactInfo },
+  components: { Contact },
   setup() {
     return { args };
   },
-  template: '<ContactInfo v-bind="args" />',
+  template: '<Contact v-bind="args" />',
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
-  label: "ContactInfo",
+  label: "Contact",
 };

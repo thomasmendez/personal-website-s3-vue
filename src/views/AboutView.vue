@@ -1,7 +1,7 @@
 <template>
   <div>
     <about-me />
-    <contact-info />
+    <contact />
   </div>
 </template>
 
@@ -9,14 +9,14 @@
 import { defineComponent } from "vue";
 
 import AboutMe from "../components/About/AboutMe/AboutMe.vue";
-import ContactInfo from "../components/About/ContactInfo/ContactInfo.vue";
+import Contact from "../components/About/Contact/Contact.vue";
 
 export default defineComponent({
   name: "AboutView",
 
   components: {
     AboutMe,
-    ContactInfo,
+    Contact,
   },
 });
 </script>
