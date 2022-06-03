@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar color="cyan" dark>
+  <v-toolbar color="grey">
     <v-toolbar-title>Thomas A. Mendez</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn text>
@@ -32,11 +32,10 @@ export default defineComponent({
 </script>
 
 <style>
-a {
-  text-decoration: none !important;
+.v-toolbar-title {
+  color: white;
 }
-
-a:hover {
-  color: #800080;
+.v-btn__content {
+  color: white;
 }
 </style>
