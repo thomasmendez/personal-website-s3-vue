@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -7,6 +8,20 @@
     <router-view />
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import Header from "./components/Header/Header.vue";
+
+export default defineComponent({
+  name: "AboutView",
+
+  components: {
+    Header,
+  },
+});
+</script>
 
 <style>
 #app {
