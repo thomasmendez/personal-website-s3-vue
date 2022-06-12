@@ -8,16 +8,20 @@
       </v-subheader>
     </v-btn>
     <v-btn class="subHeaderButton" text>
-      <v-subheader>Tools</v-subheader>
+      <v-subheader>
+        <router-link to="/work">Work</router-link>
+      </v-subheader>
     </v-btn>
     <v-btn class="subHeaderButton" text>
-      <v-subheader>Skills</v-subheader>
+      <v-subheader>
+        <router-link to="/skillsTools">Skills &amp; Tools</router-link>
+      </v-subheader>
     </v-btn>
     <v-btn class="subHeaderButton" text>
-      <v-subheader>Projects</v-subheader>
+      <router-link to="/projects">Projects</router-link>
     </v-btn>
     <v-btn class="subHeaderButton" text>
-      <v-subheader>Resume</v-subheader>
+      <router-link to="/resume">Resume</router-link>
     </v-btn>
     <v-btn class="subHeaderButton" text>
       <v-subheader>Storybook</v-subheader>
@@ -35,7 +39,7 @@ export default defineComponent({
 
 <style scoped>
 a {
-  text-decoration: none i;
+  text-decoration: none;
   color: inherit;
 }
 a:hover {
