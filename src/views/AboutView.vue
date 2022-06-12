@@ -1,8 +1,20 @@
 <template>
   <div>
-    <title-header-profile />
-    <about-me />
-    <contact />
+    <v-row>
+      <v-col>
+        <title-header-profile />
+      </v-col>
+    </v-row>
+    <v-container>
+      <v-row>
+        <v-col xs="12" sm="12" md="9" lg="9" xl="9">
+          <about-me />
+        </v-col>
+        <v-col xs="12" sm="12" md="3" lg="3" xl="3">
+          <contact />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 

@@ -34,7 +34,7 @@
               University of Texas at Austin
             </p>
           </v-col>
-          <v-col class="d-flex justify-end" xs="2" sm="4" md="4">
+          <v-col class="d-flex justify-end" xs="4" sm="4" md="4">
             <b>August 2016 - May 2019</b>
           </v-col>
         </v-row>
