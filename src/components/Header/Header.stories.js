@@ -1,23 +1,23 @@
-import AboutMe from "./AboutMe.vue";
+import Header from "./Header.vue";
 
 export default {
-  title: "Components/AboutMe",
-  component: AboutMe,
+  title: "Components/Header",
+  component: Header,
   argTypes: {
     backgroundColor: { control: "color" },
   },
 };
 
 const Template = (args) => ({
-  components: { AboutMe },
+  components: { Header },
   setup() {
     return { args };
   },
-  template: '<AboutMe v-bind="args" />',
+  template: '<Header v-bind="args" />',
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
-  label: "AboutMe",
+  label: "Header",
 };

@@ -1,23 +1,23 @@
-import AboutMe from "./AboutMe.vue";
+import Contact from "./Contact.vue";
 
 export default {
-  title: "Components/AboutMe",
-  component: AboutMe,
+  title: "Components/Contact",
+  component: Contact,
   argTypes: {
     backgroundColor: { control: "color" },
   },
 };
 
 const Template = (args) => ({
-  components: { AboutMe },
+  components: { Contact },
   setup() {
     return { args };
   },
-  template: '<AboutMe v-bind="args" />',
+  template: '<Contact v-bind="args" />',
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
-  label: "AboutMe",
+  label: "Contact",
 };
