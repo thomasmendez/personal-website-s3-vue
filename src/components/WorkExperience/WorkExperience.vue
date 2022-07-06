@@ -42,15 +42,8 @@ export default defineComponent({
     WorkDate,
     JobDescription,
   },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
     return {
-      products: ["1", "2"],
       experiences: [
         {
           jobTitle: "Associate Software Engineer",
