@@ -44,9 +44,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ProjectMedia",
-  data: () => ({
-    show: false,
-  }),
   props: {
     media: {
       type: String,
