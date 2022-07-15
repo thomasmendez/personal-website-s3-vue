@@ -11,7 +11,7 @@
                     height="200"
                     width="200"
                     id="rounded-card"
-                    src="../../../assets/pic.jpeg"
+                    :src="profilePic"
                   ></v-img>
                 </v-col>
               </v-row>
@@ -34,9 +34,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import profilePic from "../../../assets/pic.jpeg";
 
 export default defineComponent({
   name: "TitleHeaderProfile",
+  data() {
+    return {
+      profilePic: profilePic,
+    };
+  },
 });
 </script>
 
