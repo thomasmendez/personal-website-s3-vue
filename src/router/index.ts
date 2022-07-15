@@ -36,6 +36,26 @@ const routes: Array<RouteRecordRaw> = [
         /* webpackChunkName: "skillsTools" */ "../views/SkillsToolsView.vue"
       ),
   },
+  {
+    path: "/softwareEngineering",
+    name: "softwareEngineering",
+    // route level code-splitting
+    // this generates a separate chunk (softwareEngineering.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "softwareEngineering" */ "../views/SoftwareEngineeringView.vue"
+      ),
+  },
+  {
+    path: "/vrar",
+    name: "vrar",
+    // route level code-splitting
+    // this generates a separate chunk (vrar.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "vrar" */ "../views/VRARView.vue"),
+  },
 ];
 
 const router = createRouter({
