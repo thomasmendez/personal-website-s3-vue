@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b>{{ jobTitle }}</b> at {{ company }}, {{ city }}, {{ state }}
+    <b>{{ jobTitle }}</b> at <i></i>{{ company }}, {{ city }}, {{ state }}
   </div>
 </template>
 
