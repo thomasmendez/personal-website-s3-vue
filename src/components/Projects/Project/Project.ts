@@ -16,10 +16,10 @@ interface Project {
   mediaAlt: string;
   mediaTitle: string;
   mediaDescription: string;
-  website: string;
-  repository: string;
-  youTubeLink: string;
-  downloadLink: string;
+  website: string | undefined;
+  repository: string | undefined;
+  youTubeLink: string | undefined;
+  downloadLink: string | undefined;
 }
 
 export default Project;
