@@ -36,7 +36,7 @@
       </v-list>
     </v-menu>
     <v-btn class="subHeaderButton" text>
-      <router-link to="/resume">Resume</router-link>
+      <a :href="resume" target="_blank"> Resume </a>
     </v-btn>
     <v-btn class="subHeaderButton" text>
       <v-subheader>Storybook</v-subheader>
@@ -46,11 +46,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Resume from "../../assets/ResumeThomasMendez.pdf";
 
 export default defineComponent({
   name: "Header",
   data() {
     return {
+      resume: Resume,
       routes: [
         {
           name: "Software Engineering",
