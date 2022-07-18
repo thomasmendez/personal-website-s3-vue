@@ -17,9 +17,24 @@
         <router-link to="/skillsTools">Skills &amp; Tools</router-link>
       </v-subheader>
     </v-btn>
-    <v-btn class="subHeaderButton" text>
-      <router-link to="/projects">Projects</router-link>
-    </v-btn>
+    <v-menu>
+      <template #activator="{ props }">
+        <v-btn class="subHeaderButton" text v-bind="props"> Projects </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in routes"
+          :key="index"
+          :value="index"
+        >
+          <v-list-item-title>
+            <router-link :to="`${item.to}`">
+              {{ item.name }}
+            </router-link>
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <v-btn class="subHeaderButton" text>
       <router-link to="/resume">Resume</router-link>
     </v-btn>
@@ -34,6 +49,20 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Header",
+  data() {
+    return {
+      routes: [
+        {
+          name: "Software Engineering",
+          to: "/softwareEngineering",
+        },
+        {
+          name: "VR / AR",
+          to: "/vrar",
+        },
+      ],
+    };
+  },
 });
 </script>
 
