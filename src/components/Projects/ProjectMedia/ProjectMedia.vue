@@ -30,7 +30,7 @@
             </v-btn>
 
             <v-btn v-if="downloadLink" color="blue lighten-2" text>
-              <a :href="downloadLink" target="_blank">DownloadLink</a>
+              <a :href="downloadLink" target="_blank">Download</a>
             </v-btn>
           </v-card-actions>
         </v-card>
