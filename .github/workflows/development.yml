@@ -3,12 +3,6 @@ on:
   push:
     branches-ignore:
       - main
-  # workflow_dispatch:
-  #   inputs:
-  #     job:
-  #       description: 'Destroys bucket'
-  #       required: true
-  #       default: 'dev-destroy-s3-dev'
 
 jobs:
   build:
