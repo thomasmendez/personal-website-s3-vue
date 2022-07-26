@@ -13,7 +13,7 @@ resource "aws_s3_bucket_acl" "bucketdev" {
 resource "aws_s3_bucket_lifecycle_configuration" "bucketdev" {
   bucket = var.aws_bucket_name
   rule {
-    id     = "cleanup"
+    id = "cleanup"
     filter {} # applies to all objects in bucket
     status = "Enabled"
     expiration {
