@@ -448,6 +448,9 @@ jobs:
               body: output
             })
 
+      - name: AWS CLI - Empty Bucket
+        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
+
       - name: Terraform Apply - Destroy Bucket
         id: apply-destroy
         if: steps.plan-destroy.outcome == 'success'
@@ -521,6 +524,9 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+      - name: AWS CLI - Empty Bucket
+        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME }}-${{ github.run_id }} --recursive
 
       - name: Terraform Apply - Destroy Bucket
         id: apply-destroy
