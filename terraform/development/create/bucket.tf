@@ -23,7 +23,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucketdev" {
 }
 
 resource "aws_s3_bucket_policy" "bucketdev" {
-  bucket = var.aws_bucket_name
+  bucket = aws_s3_bucket.bucketdev.id
   policy = <<EOF
 {
   "Id": "MakePublic",

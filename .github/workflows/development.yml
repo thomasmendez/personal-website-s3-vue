@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      STORYBOOK_URL: http://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}.s3-website.us-east-2.amazonaws.com
+      VUE_APP_STORYBOOK_URL: http://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}.s3-website.us-east-2.amazonaws.com
     steps:
       - name: Checkout
         uses: actions/checkout@v2

@@ -11,7 +11,7 @@ resource "aws_s3_bucket_acl" "bucketdev" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "bucketdev" {
-  bucket = var.aws_bucket_name
+  bucket = aws_s3_bucket.bucketdev.id
   rule {
     id = "cleanup"
     filter {} # applies to all objects in bucket
