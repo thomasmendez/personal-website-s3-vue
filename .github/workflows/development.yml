@@ -456,7 +456,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION_DEV }}
 
       - name: AWS CLI - Empty Bucket
-        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME }}-${{ github.run_id }} --recursive
+        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }} --recursive
 
       - name: Terraform Apply - Destroy Bucket
         id: apply-destroy
@@ -467,6 +467,7 @@ jobs:
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}
           terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
+          terraform -chdir=terraform/development/destroy plan -target="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
 
   dev-destroy-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -537,7 +538,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_DEV }}
-          
+
       - name: AWS CLI - Empty Bucket
         run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
 
@@ -550,3 +551,4 @@ jobs:
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}
           terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -auto-approve
+          terraform -chdir=terraform/development/destroy plan -target="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
