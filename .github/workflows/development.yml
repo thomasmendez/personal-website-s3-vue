@@ -198,6 +198,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
+          terraform -chdir=terraform/development/create destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
 
   sync-s3-dev:
     runs-on: ubuntu-latest
@@ -362,6 +363,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -auto-approve
+          terraform -chdir=terraform/development/create destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -auto-approve
 
   sync-s3-dev-storybook:
     runs-on: ubuntu-latest
