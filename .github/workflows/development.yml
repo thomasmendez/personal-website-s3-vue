@@ -410,6 +410,9 @@ jobs:
         id: validate-destroy
         run: terraform -chdir=terraform/development/remote validate -no-color
 
+      - name: AWS CLI - Empty Bucket
+        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }} --recursive
+
       - name: Terraform Plan - Destroy Existing Bucket
         id: plan-destroy
         run: |
@@ -417,9 +420,6 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/remote destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -no-color
-
-      # - name: AWS CLI - Empty Bucket
-      #   run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }} --recursive
 
   dev-destroy-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -447,6 +447,9 @@ jobs:
         id: validate-destroy
         run: terraform -chdir=terraform/development/remote validate -no-color
 
+      - name: AWS CLI - Empty Bucket
+        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
+
       - name: Terraform Plan - Destroy Existing Bucket
         id: plan-destroy
         run: |
@@ -454,6 +457,3 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/remote destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -no-color
-
-      # - name: AWS CLI - Empty Bucket
-      #   run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
