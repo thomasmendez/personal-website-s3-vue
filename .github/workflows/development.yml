@@ -398,76 +398,28 @@ jobs:
           # terraform_version: 0.13.0:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Terraform Format - Destroy Bucket
+      - name: Terraform Format - Destroy Existing Bucket
         id: fmt-destroy
-        run: terraform -chdir=terraform/development/destroy fmt -check
+        run: terraform -chdir=terraform/development/remote fmt -check
 
-      - name: Terraform Init - Destroy Bucket
+      - name: Terraform Init - Destroy Existing Bucket
         id: init-destroy
-        run: terraform -chdir=terraform/development/destroy init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
-      - name: Terraform Validate - Destroy Bucket
+      - name: Terraform Validate - Destroy Existing Bucket
         id: validate-destroy
-        run: terraform -chdir=terraform/development/destroy validate -no-color
+        run: terraform -chdir=terraform/development/remote validate -no-color
 
-      - name: Terraform Plan - Destroy Bucket
+      - name: Terraform Plan - Destroy Existing Bucket
         id: plan-destroy
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -no-color
+          terraform -chdir=terraform/development/remote destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -no-color
 
-      - name: Update Pull Request - Destroy Bucket
-        uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan-destroy.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_DEV }}
-
-      - name: AWS CLI - Empty Bucket
-        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }} --recursive
-
-      - name: Terraform Apply - Destroy Bucket
-        id: apply-destroy
-        if: steps.plan-destroy.outcome == 'success'
-        run: |
-          export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
-          export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}
-          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
-          terraform -chdir=terraform/development/destroy plan -destroy -target="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
+      # - name: AWS CLI - Empty Bucket
+      #   run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }} --recursive
 
   dev-destroy-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -483,72 +435,25 @@ jobs:
           # terraform_version: 0.13.0:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Terraform Format - Destroy Bucket
+      - name: Terraform Format - Destroy Existing Bucket
         id: fmt-destroy
-        run: terraform -chdir=terraform/development/destroy fmt -check
+        run: terraform -chdir=terraform/development/remote fmt -check
 
-      - name: Terraform Init - Destroy Bucket
+      - name: Terraform Init - Destroy Existing Bucket
         id: init-destroy
-        run: terraform -chdir=terraform/development/destroy init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
-      - name: Terraform Validate - Destroy Bucket
+      - name: Terraform Validate - Destroy Existing Bucket
         id: validate-destroy
-        run: terraform -chdir=terraform/development/destroy validate -no-color
+        run: terraform -chdir=terraform/development/remote validate -no-color
 
-      - name: Terraform Plan - Destroy Bucket
+      - name: Terraform Plan - Destroy Existing Bucket
         id: plan-destroy
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -no-color
+          terraform -chdir=terraform/development/remote destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -no-color
 
-      - name: Update Pull Request - Destroy Bucket
-        uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan-destroy.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_DEV }}
-
-      - name: AWS CLI - Empty Bucket
-        run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
-
-      - name: Terraform Apply - Destroy Bucket
-        id: apply-destroy
-        if: steps.plan-destroy.outcome == 'success'
-        run: |
-          export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
-          export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}
-          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -auto-approve
-          terraform -chdir=terraform/development/destroy plan -destroy -target="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }}" -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ github.run_id }}" -auto-approve
+      # - name: AWS CLI - Empty Bucket
+      #   run: aws s3 rm s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.run_id }} --recursive
