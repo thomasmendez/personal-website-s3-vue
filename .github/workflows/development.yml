@@ -58,11 +58,11 @@ jobs:
           path: storybook-static/
           retention-days: 1
 
-      - name: "Set BUCKET_NAME_SUFFIX"
+      - name: "Create bucket_name_suffix Output"
         id: bucket_name_suffix
         run: |
-          name=$(echo ${{ github.ref_name }} | sed 's/\//-/')
-          echo "::set-output name=suffix::$name"
+          suffix=$(echo ${{ github.ref_name }} | sed 's/\//-/')
+          echo "::set-output name=suffix::$suffix"
 
   configure-s3-dev:
     runs-on: ubuntu-latest
