@@ -61,7 +61,8 @@ jobs:
       - name: "Set BUCKET_NAME_SUFFIX"
         id: bucket_name_suffix
         run: |
-          echo "::set-output name=suffix::${{ github.ref_name }} | sed 's/\//-/'"
+          name=$(echo ${{ github.ref_name }} | sed 's/\//-/')
+          echo "::set-output name=suffix::$name"
 
   configure-s3-dev:
     runs-on: ubuntu-latest
