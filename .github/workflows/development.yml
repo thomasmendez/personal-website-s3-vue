@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      bucket_name_suffix: ${{ steps.outputs.suffix }}
     env:
       VUE_APP_STORYBOOK_URL: http://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ github.ref_name }}.s3-website.us-east-2.amazonaws.com
     steps:
@@ -93,7 +95,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Existing Bucket
@@ -148,7 +150,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Create Bucket
@@ -192,8 +194,8 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
-          terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}
+          terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
 
       - name: Terraform Apply - Create Bucket
         id: apply-create
@@ -202,7 +204,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
 
   sync-s3-dev:
     runs-on: ubuntu-latest
@@ -223,7 +225,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_DEV }}
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./dist/ s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
+        run: aws s3 sync ./dist/ s3://${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}
 
   configure-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -257,7 +259,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Existing Bucket
@@ -312,7 +314,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Create Bucket
@@ -356,8 +358,8 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
-          terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}
+          terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
 
       - name: Terraform Apply - Create Bucket
         id: apply-create
@@ -366,7 +368,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
 
   sync-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -387,7 +389,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_DEV }}
       - name: Deploy static storybook site to S3 bucket
-        run: aws s3 sync ./storybook-static/ s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
+        run: aws s3 sync ./storybook-static/ s3://${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}
 
   dev-destroy-s3-dev:
     runs-on: ubuntu-latest
@@ -421,7 +423,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Terraform Apply - Existing Bucket
@@ -431,9 +433,9 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
-          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
-          terraform -chdir=terraform/development/destroy destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}
+          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
+          terraform -chdir=terraform/development/destroy destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
 
   dev-destroy-s3-dev-storybook:
     runs-on: ubuntu-latest
@@ -467,7 +469,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -no-color
+          terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -no-color
         continue-on-error: true
 
       - name: Terraform Apply - Existing Bucket
@@ -477,6 +479,6 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
-          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}
-          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
-          terraform -chdir=terraform/development/destroy destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.bucket_name_suffix.outputs.suffix }}" -auto-approve
+          terraform -chdir=terraform/development/destroy import -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" aws_s3_bucket.bucketdev ${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}
+          terraform -chdir=terraform/development/destroy apply -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
+          terraform -chdir=terraform/development/destroy destroy -var="aws_bucket_name=${{ secrets.AWS_BUCKET_NAME_DEV_STORYBOOK }}-${{ needs.build.outputs.bucket_name_suffix }}" -auto-approve
