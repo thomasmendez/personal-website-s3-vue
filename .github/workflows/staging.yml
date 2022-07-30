@@ -25,6 +25,7 @@ jobs:
     
   build:
     runs-on: ubuntu-latest
+    needs: pre_build
     env:
       VUE_APP_STORYBOOK_URL: http://${{ needs.pre_build.outputs.bucket_name_storybook }}.s3-website.us-east-2.amazonaws.com
     steps:
@@ -76,7 +77,7 @@ jobs:
 
   configure-s3-dev:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [pre_build, build]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -218,7 +219,7 @@ jobs:
 
   sync-s3-dev:
     runs-on: ubuntu-latest
-    needs: [build, configure-s3-dev]
+    needs: [pre_build, build, configure-s3-dev]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -381,7 +382,7 @@ jobs:
 
   sync-s3-dev-storybook:
     runs-on: ubuntu-latest
-    needs: [build, configure-s3-dev-storybook]
+    needs: [pre_build, build, configure-s3-dev-storybook]
     if: github.ref != 'refs/heads/main'
     steps:
       - name: Checkout
