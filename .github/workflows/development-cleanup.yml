@@ -62,7 +62,6 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ needs.pre_destroy.outputs.bucket_name }}" -no-color
-        continue-on-error: true
 
       - name: Terraform Apply - Destroy Existing Bucket
         id: apply-destroy
@@ -107,7 +106,6 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/destroy plan -var="aws_bucket_name=${{ needs.pre_destroy.outputs.bucket_name_storybook }}" -no-color
-        continue-on-error: true
 
       - name: Terraform Apply - Destroy Existing Bucket
         id: apply-destroy

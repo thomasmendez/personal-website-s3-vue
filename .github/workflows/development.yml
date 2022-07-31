@@ -190,7 +190,8 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-      - name: Terraform Plan Status - Existing Bucket && Create Bucket
+
+      - name: Terraform Plan Status - Existing Bucket && Create Bucket Failed
         if: steps.plan-remote.outcome == 'failure' && steps.plan-create.outcome == 'failure'
         run: exit 1
 
@@ -203,6 +204,7 @@ jobs:
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
           terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" aws_s3_bucket.bucketdev ${{ needs.pre_build.outputs.bucket_name }}
           terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -auto-approve
+
       - name: Terraform Apply - Create Bucket
         id: apply-create
         if: steps.plan-create.outcome == 'success'

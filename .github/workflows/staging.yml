@@ -202,7 +202,7 @@ jobs:
               body: output
             })
 
-      - name: Terraform Plan Status - Existing Bucket && Create Bucket
+      - name: Terraform Plan Status - Existing Bucket && Create Bucket Failed
         if: steps.plan-remote.outcome == 'failure' && steps.plan-create.outcome == 'failure'
         run: exit 1
 
