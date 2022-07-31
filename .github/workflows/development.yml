@@ -21,7 +21,7 @@ jobs:
       - name: "Create bucket_name"
         id: bucket_name
         run: |
-          name=${{ secrets.AWS_BUCKET_NAME_DEV }}-dev-${{ steps.bucket_name_suffix.outputs.suffix }}
+          name=${{ secrets.AWS_BUCKET_NAME }}-dev-${{ steps.bucket_name_suffix.outputs.suffix }}
           echo "::set-output name=bucket_name::$name"
 
       - name: "Create bucket_name_storybook Output"
