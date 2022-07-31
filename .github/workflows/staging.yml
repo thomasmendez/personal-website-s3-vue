@@ -241,7 +241,7 @@ jobs:
 
   configure-s3-stg-storybook:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [pre_build, build]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -358,7 +358,7 @@ jobs:
               body: output
             })
 
-      - name: Terraform Plan Status - Existing Bucket && Create Bucket
+      - name: Terraform Plan Status - Existing Bucket && Create Bucket Failed
         if: steps.plan-remote.outcome == 'failure' && steps.plan-create.outcome == 'failure'
         run: exit 1
 
