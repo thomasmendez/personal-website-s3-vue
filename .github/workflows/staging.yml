@@ -13,16 +13,10 @@ jobs:
       bucket_name: ${{ steps.bucket_name.outputs.bucket }}
       bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.storybook }}
     steps:
-      - name: "Create bucket_name_suffix Output"
-        id: bucket_name_suffix
-        run: |
-          suffix=$(echo ${{ github.ref_name }} | sed 's/\//-/')
-          echo "::set-output name=suffix::$suffix"
-
       - name: "Create bucket_name Output"
         id: bucket_name
         run: |
-          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }}-${{ steps.bucket_name_suffix.outputs.suffix }})
+          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }}
           echo "::set-output name=bucket::$bucket_name"
 
       - name: "Create bucket_name_storybook Output"
