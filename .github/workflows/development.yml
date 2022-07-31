@@ -102,7 +102,7 @@ jobs:
 
       - name: Terraform Init - Existing Bucket
         id: init-remote
-        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Terraform Validate - Existing Bucket
         id: validate-remote
@@ -113,7 +113,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -no-color
         continue-on-error: true
 
@@ -141,7 +141,7 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-            
+
       - name: Terraform Format - Create Bucket
         id: fmt-create
         if: steps.plan-remote.outcome == 'failure'
@@ -150,7 +150,7 @@ jobs:
       - name: Terraform Init - Create Bucket
         id: init-create
         if: steps.plan-remote.outcome == 'failure'
-        run: terraform -chdir=terraform/development/create init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/create init -backend-config="region=${{ secrets.AWS_REGION }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Terraform Validate - Create Bucket
         id: validate-create
@@ -163,7 +163,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -no-color
         continue-on-error: true
 
@@ -202,7 +202,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" aws_s3_bucket.bucketdev ${{ needs.pre_build.outputs.bucket_name }}
           terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -auto-approve
 
@@ -212,7 +212,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -auto-approve
 
   sync-s3-dev:
@@ -231,7 +231,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_DEV }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./dist/ s3://${{ needs.pre_build.outputs.bucket_name }}
 
@@ -254,7 +254,7 @@ jobs:
 
       - name: Terraform Init - Existing Bucket
         id: init-remote
-        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/remote init -backend-config="region=${{ secrets.AWS_REGION }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Terraform Validate - Existing Bucket
         id: validate-remote
@@ -265,7 +265,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/remote plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -no-color
         continue-on-error: true
 
@@ -302,7 +302,7 @@ jobs:
       - name: Terraform Init - Create Bucket
         id: init-create
         if: steps.plan-remote.outcome == 'failure'
-        run: terraform -chdir=terraform/development/create init -backend-config="region=${{ secrets.AWS_REGION_DEV }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        run: terraform -chdir=terraform/development/create init -backend-config="region=${{ secrets.AWS_REGION }}" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Terraform Validate - Create Bucket
         id: validate-create
@@ -315,7 +315,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -no-color
         continue-on-error: true
 
@@ -354,7 +354,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" aws_s3_bucket.bucketdev ${{ needs.pre_build.outputs.bucket_name_storybook }}
           terraform -chdir=terraform/development/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -auto-approve
 
@@ -364,7 +364,7 @@ jobs:
         run: |
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION_DEV }}"
+          export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
           terraform -chdir=terraform/development/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -auto-approve
 
   sync-s3-dev-storybook:
@@ -383,6 +383,6 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_DEV }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Deploy static storybook site to S3 bucket
         run: aws s3 sync ./storybook-static/ s3://${{ needs.pre_build.outputs.bucket_name_storybook }}
