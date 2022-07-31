@@ -39,7 +39,7 @@
       <a :href="resume" target="_blank"> Resume </a>
     </v-btn>
     <v-btn class="subHeaderButton" text>
-      <v-subheader>Storybook</v-subheader>
+      <a :href="storybookLink" target="_blank"> Storybook </a>
     </v-btn>
   </v-toolbar>
 </template>
@@ -53,6 +53,7 @@ export default defineComponent({
   data() {
     return {
       resume: Resume,
+      storybookLink: process.env.VUE_APP_STORYBOOK_URL,
       routes: [
         {
           name: "Software Engineering",

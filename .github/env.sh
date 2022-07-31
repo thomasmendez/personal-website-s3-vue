@@ -1,0 +1,2 @@
+#!/bin/bash
+echo VUE_APP_STORYBOOK_URL=$VUE_APP_STORYBOOK_URL>.env

@@ -10,7 +10,7 @@ import { defineComponent } from "vue";
 import Header from "./components/Header/Header.vue";
 
 export default defineComponent({
-  name: "AboutView",
+  name: "App",
 
   components: {
     Header,
