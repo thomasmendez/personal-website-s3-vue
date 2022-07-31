@@ -16,7 +16,7 @@ jobs:
       - name: "Create bucket_name Output"
         id: bucket_name
         run: |
-          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }}
+          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }})
           echo "::set-output name=bucket::$bucket_name"
 
       - name: "Create bucket_name_storybook Output"
