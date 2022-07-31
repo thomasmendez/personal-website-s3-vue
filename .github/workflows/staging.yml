@@ -7,21 +7,29 @@ on:
 jobs:
   pre_build: 
     runs-on: ubuntu-latest
+    env:
+      AWS_BUCKET_NAME: thomasamendez-vue-stg
     outputs:
-      bucket_name: ${{ steps.bucket_name.outputs.name }}
-      bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.name_storybook }}
+      bucket_name: ${{ steps.bucket_name.outputs.bucket }}
+      bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.storybook }}
     steps:
-      - name: "Create bucket_name"
+      - name: "Create bucket_name_suffix Output"
+        id: bucket_name_suffix
+        run: |
+          suffix=$(echo ${{ github.ref_name }} | sed 's/\//-/')
+          echo "::set-output name=suffix::$suffix"
+
+      - name: "Create bucket_name Output"
         id: bucket_name
         run: |
-          name=${{ secrets.AWS_BUCKET_NAME }}-stg
-          echo "::set-output name=bucket_name::$name"
+          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }}-${{ steps.bucket_name_suffix.outputs.suffix }})
+          echo "::set-output name=bucket::$bucket_name"
 
       - name: "Create bucket_name_storybook Output"
         id: bucket_name_storybook
         run: |
-          storybook=${{ steps.bucket_name.outputs.bucket_name }}-storybook
-          echo "::set-output name=name_storybook::$storybook"
+          storybook=$(echo ${{ steps.bucket_name.outputs.bucket }}-storybook)
+          echo "::set-output name=storybook::$storybook"
     
   build:
     runs-on: ubuntu-latest

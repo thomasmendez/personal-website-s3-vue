@@ -8,10 +8,9 @@ jobs:
   pre_build:
     runs-on: ubuntu-latest
     env:
-      AWS_BUCKET_NAME: test-dev
+      AWS_BUCKET_NAME: thomasamendez-vue-dev
     outputs:
       bucket_name: ${{ steps.bucket_name.outputs.bucket }}
-      bucket_name_suffix: ${{ steps.bucket_name_suffix.outputs.suffix }}
       bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.storybook }}
     steps:
       - name: "Create bucket_name_suffix Output"
