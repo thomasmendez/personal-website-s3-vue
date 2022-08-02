@@ -19,7 +19,7 @@ jobs:
       - name: "Create bucket_name_storybook Output"
         id: bucket_name_storybook
         run: |
-          storybook=$(echo storybook-vue.${{ steps.bucket_name.outputs.bucket }}.com)
+          storybook=$(echo storybook-vue.${{ env.AWS_BUCKET_NAME }}.com)
           echo "::set-output name=storybook::$storybook"
 
   build:
