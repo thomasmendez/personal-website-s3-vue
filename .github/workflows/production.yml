@@ -5,7 +5,7 @@ jobs:
   pre_build:
     runs-on: ubuntu-latest
     env:
-      AWS_BUCKET_NAME: thomasamendez-vue
+      AWS_BUCKET_NAME: thomasamendez
     outputs:
       bucket_name: ${{ steps.bucket_name.outputs.bucket }}
       bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.storybook }}
@@ -13,13 +13,13 @@ jobs:
       - name: "Create bucket_name Output"
         id: bucket_name
         run: |
-          bucket_name=$(echo ${{ env.AWS_BUCKET_NAME }})
+          bucket_name=$(echo vue.${{ env.AWS_BUCKET_NAME }}.com)
           echo "::set-output name=bucket::$bucket_name"
 
       - name: "Create bucket_name_storybook Output"
         id: bucket_name_storybook
         run: |
-          storybook=$(echo ${{ steps.bucket_name.outputs.bucket }}-storybook)
+          storybook=$(echo storybook-vue.${{ steps.bucket_name.outputs.bucket }}.com)
           echo "::set-output name=storybook::$storybook"
 
   build:
