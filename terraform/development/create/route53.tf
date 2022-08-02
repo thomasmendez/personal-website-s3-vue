@@ -1,8 +1,8 @@
-resource "aws_route53_zone" "dev" {
+resource "aws_route53_zone" "test" {
   name = "thomasamendez.com"
 }
 
-resource "aws_route53_zone" "dev" {
+resource "aws_route53_zone" "dev-zone" {
   name = "dev.thomasamendez.com"
   tags = {
     Environment = "dev"
