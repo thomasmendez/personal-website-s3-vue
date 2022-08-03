@@ -99,6 +99,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = "a32f2306-db43-46f4-b49a-de95506449f2"
   }
 }
