@@ -3,7 +3,6 @@ resource "aws_route53_zone" "main" {
 }
 resource "aws_route53_zone" "test" {
   name    = "dev.thomasamendez.com"
-  zone_id = "Z03836913RO0VDLQJ03DI"
   tags = {
     Environment = "dev"
   }
