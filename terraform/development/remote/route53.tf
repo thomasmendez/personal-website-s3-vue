@@ -1,6 +1,6 @@
-# resource "aws_route53_zone" "main" {
-#   name = "thomasamendez.com"
-# }
+resource "aws_route53_zone" "main" {
+  name = "thomasamendez.com"
+}
 # resource "aws_route53_zone" "test" {
 #   name = "dev.thomasamendez.com"
 #   tags = {
