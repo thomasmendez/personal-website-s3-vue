@@ -1,8 +1,10 @@
 resource "aws_route53_zone" "main" {
-  name = "thomasamendez.com"
+  name    = "thomasamendez.com"
+  zone_id = "Z03836913RO0VDLQJ03DI"
 }
 resource "aws_route53_zone" "test" {
-  name = "dev.thomasamendez.com"
+  name    = "dev.thomasamendez.com"
+  zone_id = "Z03836913RO0VDLQJ03DI"
   tags = {
     Environment = "dev"
   }
