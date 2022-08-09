@@ -1,17 +1,15 @@
 resource "aws_route53_zone" "main" {
   name = "thomasamendez.com"
 }
-resource "aws_route53_zone" "test" {
-  name = "dev.thomasamendez.com"
-  tags = {
-    Environment = "dev"
-  }
-}
 
-resource "aws_route53_record" "test-ns" {
+resource "aws_route53_record" "cert_validation" {
   zone_id = aws_route53_zone.main.zone_id
-  name    = "dev.thomasamendez.com"
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.test.name_servers
+  name = "thomasamendez.com"
+  type = "A"
+
+  alias {
+    name = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
 }
