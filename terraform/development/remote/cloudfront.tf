@@ -102,3 +102,24 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cloudfront_default_certificate = true
   }
 }
+
+resource "aws_acm_certificate" "cert" {
+  provider = aws.virginia
+
+  domain_name       = "thomasamendez.com"
+  validation_method = "DNS"
+
+  tags = {
+    Name        = "dev"
+    Environment = var.env
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+resource "aws_acm_certificate_validation" "cert" {
+  provider                = aws.virginia
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
+}
