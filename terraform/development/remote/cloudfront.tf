@@ -99,39 +99,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cf_gitbook.certificate_arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2018"
+    cloudfront_default_certificate = true
   }
-}
-
-resource "aws_acm_certificate" "cf_gitbook" {
-  provider = aws.virginia
-
-  domain_name       = "thomasamendez.com"
-  validation_method = "DNS"
-
-  tags = {
-    Name        = "dev"
-    Environment = var.env
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_route53_record" "cf_gitbook_validation" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = aws_acm_certificate.cf_gitbook.domain_validation_options.resource_record_name
-  type    = aws_acm_certificate.cf_gitbook.domain_validation_options.resource_record_type
-  records = [aws_acm_certificate.cf_gitbook.domain_validation_options.resource_record_value]
-  ttl     = 300
-}
-
-resource "aws_acm_certificate_validation" "cf_gitbook" {
-  provider = aws.virginia
-
-  certificate_arn         = aws_acm_certificate.cf_gitbook.arn
-  validation_record_fqdns = [aws_route53_record.cf_gitbook_validation.fqdn]
 }
