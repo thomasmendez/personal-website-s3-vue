@@ -41,6 +41,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cache_policy_id        = data.aws_cloudfront_cache_policy.cache_policy.id
   }
 
+  custom_error_response {
+    error_caching_min_ttl = 10
+    error_code            = 404
+    response_code         = 404
+    response_page_path    = "/index.html"
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
