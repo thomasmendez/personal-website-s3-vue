@@ -25,8 +25,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   # aliases = ["dev.${var.aws_bucket_name}.com"]
 
   default_cache_behavior {
-    allowed_methods = ["GET", "HEAD"]
-    # cached_methods   = ["GET", "HEAD"]
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
 
     # forwarded_values {
@@ -58,9 +58,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   #   minimum_protocol_version = "TLSv1.2_2018"
   # }
 
-  # viewer_certificate {
-  #   cloudfront_default_certificate = true
-  # }
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
 }
 
 # resource "aws_acm_certificate" "cert" {
