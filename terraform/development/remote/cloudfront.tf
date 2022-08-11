@@ -5,7 +5,7 @@ resource "aws_cloudfront_origin_access_identity" "bucketdev" {
   comment = "bucketdev"
 }
 data "aws_cloudfront_cache_policy" "cache_policy" {
-    name = "Managed-CachingOptimized"
+  name = "Managed-CachingOptimized"
 }
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   # aliases = ["dev.${var.aws_bucket_name}.com"]
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
+    allowed_methods = ["GET", "HEAD"]
     # cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
 
@@ -38,7 +38,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     # }
 
     viewer_protocol_policy = "redirect-to-https"
-    cache_policy_id = data.aws_cloudfront_cache_policy.cache_policy.id
+    cache_policy_id        = data.aws_cloudfront_cache_policy.cache_policy.id
   }
 
   restrictions {
