@@ -19,7 +19,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "Managed by Terraform"
   default_root_object = "index.html"
 
-  aliases = ["dev.${var.aws_bucket_name}.com"]
+  # aliases = ["dev.${var.aws_bucket_name}.com"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -98,30 +98,34 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     Environment = "development"
   }
 
+  # viewer_certificate {
+  #   acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
+  #   ssl_support_method       = "sni-only"
+  #   minimum_protocol_version = "TLSv1.2_2018"
+  # }
+
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2018"
+    cloudfront_default_certificate = true
   }
 }
 
-resource "aws_acm_certificate" "cert" {
-  provider = aws.virginia
+# resource "aws_acm_certificate" "cert" {
+#   provider = aws.virginia
 
-  domain_name       = "thomasamendez.com"
-  validation_method = "DNS"
+#   domain_name       = "thomasamendez.com"
+#   validation_method = "DNS"
 
-  tags = {
-    Name        = "dev"
-    Environment = var.env
-  }
+#   tags = {
+#     Name        = "dev"
+#     Environment = var.env
+#   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-resource "aws_acm_certificate_validation" "cert" {
-  provider                = aws.virginia
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
-}
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
+# resource "aws_acm_certificate_validation" "cert" {
+#   provider                = aws.virginia
+#   certificate_arn         = aws_acm_certificate.cert.arn
+#   validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
+# }
