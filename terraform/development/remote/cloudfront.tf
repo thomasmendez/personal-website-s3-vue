@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["US"]
+      locations        = ["US", "CA"]
     }
   }
 
@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   viewer_certificate {
     acm_certificate_arn = data.aws_acm_certificate.amazon_cert.arn
-    ssl_support_method  = "TLSv1.2_2021"
+    ssl_support_method  = "sni-only"
   }
 
 }

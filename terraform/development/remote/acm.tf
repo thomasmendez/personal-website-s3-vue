@@ -11,10 +11,10 @@ data "aws_acm_certificate" "amazon_cert" {
   provider    = aws.virginia
 }
 
-data "aws_route53_zone" "zone" {
-  name         = var.domain
-  private_zone = false
-}
+# data "aws_route53_zone" "zone" {
+#   name         = var.domain
+#   private_zone = false
+# }
 
 # resource "aws_route53_record" "cert_validation" {
 #   name    = data.aws_acm_certificate.amazon_cert.domain_validation_options.name
