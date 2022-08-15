@@ -29,14 +29,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
 
-    # forwarded_values {
-    #   query_string = false
-
-    #   cookies {
-    #     forward = "none"
-    #   }
-    # }
-
     viewer_protocol_policy = "redirect-to-https"
     cache_policy_id        = data.aws_cloudfront_cache_policy.cache_policy.id
   }
@@ -65,9 +57,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   #   minimum_protocol_version = "TLSv1.2_2018"
   # }
 
+  # viewer_certificate {
+  #   cloudfront_default_certificate = true
+  # }
+
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = data.aws_acm_certificate.amazon_cert.arn
+    ssl_support_method  = "sni-only"
   }
+
 }
 
 # resource "aws_acm_certificate" "cert" {
