@@ -1,19 +1,19 @@
 locals {
-  s3_origin_id = aws_s3_bucket.bucketdev.id
+  s3_origin_id = aws_s3_bucket.bucketprd.id
 }
-resource "aws_cloudfront_origin_access_identity" "bucketdev" {
-  comment = "bucketdev"
+resource "aws_cloudfront_origin_access_identity" "bucketprd" {
+  comment = "bucketprd"
 }
 data "aws_cloudfront_cache_policy" "cache_policy" {
   name = "Managed-CachingOptimized"
 }
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = aws_s3_bucket.bucketdev.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.bucketprd.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.bucketdev.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.bucketprd.cloudfront_access_identity_path
     }
   }
 
@@ -22,7 +22,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "Managed by Terraform"
   default_root_object = "index.html"
 
-  aliases = ["${var.aws_bucket_name}.${var.domain}"]
+  aliases = ["${var.sub_domain}.${var.domain}"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -43,12 +43,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["US", "CA"]
+      locations        = ["US"]
     }
   }
 
   tags = {
-    Environment = "development"
+    Environment = "production"
   }
 
   viewer_certificate {

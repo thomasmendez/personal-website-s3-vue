@@ -6,20 +6,44 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_BUCKET_NAME: thomasamendez
+      AWS_DOMAIN: thomasamendez.com
+      AWS_SUB_DOMAIN: vue
+      AWS_SUB_DOMAIN_STORYBOOK: vue-storybook
     outputs:
       bucket_name: ${{ steps.bucket_name.outputs.bucket }}
       bucket_name_storybook: ${{ steps.bucket_name_storybook.outputs.storybook }}
+      domain: ${{ steps.domain.outputs.domain }}
+      sub_domain: ${{ steps.sub_domain.outputs.sub_domain }}
+      sub_domain_storybook: ${{ steps.sub_domain_storybook.outputs.storybook }}
     steps:
+      - name: "Create domain Output"
+        id: domain
+        run: |
+          domain=$(echo ${{ env.AWS_DOMAIN }})
+          echo "::set-output name=domain::$domain"
+
+      - name: "Create sub_domain Output"
+        id: sub_domain
+        run: |
+          sub_domain=$(echo ${{ env.AWS_SUB_DOMAIN }})
+          echo "::set-output name=sub_domain::$sub_domain"
+
+      - name: "Create sub_domain_storybook Output"
+        id: sub_domain_storybook
+        run: |
+          sub_domain_storybook=$(echo ${{ env.AWS_SUB_DOMAIN_STORYBOOK }})
+          echo "::set-output name=sub_domain_storybook::$sub_domain_storybook"
+
       - name: "Create bucket_name Output"
         id: bucket_name
         run: |
-          bucket_name=$(echo vue.${{ env.AWS_BUCKET_NAME }}.com)
+          bucket_name=$(echo ${{ env.AWS_SUB_DOMAIN }}.${{ env.AWS_BUCKET_NAME }}.com)
           echo "::set-output name=bucket::$bucket_name"
 
       - name: "Create bucket_name_storybook Output"
         id: bucket_name_storybook
         run: |
-          storybook=$(echo storybook-vue.${{ env.AWS_BUCKET_NAME }}.com)
+          storybook=$(echo ${{ env.AWS_SUB_DOMAIN_STORYBOOK }}.${{ env.AWS_BUCKET_NAME }}.com)
           echo "::set-output name=storybook::$storybook"
 
   build:
@@ -154,7 +178,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -no-color
+          terraform -chdir=terraform/production/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Create Bucket
@@ -193,8 +217,8 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" aws_s3_bucket.bucketprd ${{ needs.pre_build.outputs.bucket_name }}
-          terraform -chdir=terraform/production/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -auto-approve
+          terraform -chdir=terraform/production/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain }}" aws_s3_bucket.bucketprd ${{ needs.pre_build.outputs.bucket_name }}
+          terraform -chdir=terraform/production/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain }}" -auto-approve
 
       - name: Terraform Apply - Create Bucket
         id: apply-create
@@ -203,7 +227,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -auto-approve
+          terraform -chdir=terraform/production/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain }}" -auto-approve
 
   sync-s3-prd:
     runs-on: ubuntu-latest
@@ -256,7 +280,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/remote plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -no-color
+          terraform -chdir=terraform/production/remote plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain_storybook }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Existing Bucket
@@ -305,7 +329,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -no-color
+          terraform -chdir=terraform/production/create plan -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain_storybook }}" -no-color
         continue-on-error: true
 
       - name: Update Pull Request - Create Bucket
@@ -343,8 +367,8 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" aws_s3_bucket.bucketprd ${{ needs.pre_build.outputs.bucket_name_storybook }}
-          terraform -chdir=terraform/production/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -auto-approve
+          terraform -chdir=terraform/production/remote import -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain_storybook }}" aws_s3_bucket.bucketprd ${{ needs.pre_build.outputs.bucket_name_storybook }}
+          terraform -chdir=terraform/production/remote apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain_storybook }}" -auto-approve
       - name: Terraform Apply - Create Bucket
         id: apply-create
         if: steps.plan-create.outcome == 'success'
@@ -352,7 +376,7 @@ jobs:
           export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
           export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           export AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}"
-          terraform -chdir=terraform/production/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -auto-approve
+          terraform -chdir=terraform/production/create apply -var="aws_bucket_name=${{ needs.pre_build.outputs.bucket_name_storybook }}" -var="domain=${{ needs.pre_build.outputs.domain }}" -var="sub_domain=${{ needs.pre_build.outputs.sub_domain_storybook }}" -auto-approve
 
   sync-s3-prd-storybook:
     runs-on: ubuntu-latest
