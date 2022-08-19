@@ -56,24 +56,5 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "AboutMe",
-
-  data() {
-    return {
-      whatsNext: [
-        {
-          text: "Explore components",
-          href: "https://vuetifyjs.com",
-        },
-        {
-          text: "Roadmap",
-          href: "https://vuetifyjs.com/en/introduction/roadmap/",
-        },
-        {
-          text: "Frequently Asked Questions",
-          href: "https://vuetifyjs.com/getting-started/frequently-asked-questions",
-        },
-      ],
-    };
-  },
 });
 </script>
