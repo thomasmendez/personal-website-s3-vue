@@ -2,20 +2,14 @@
   <v-toolbar color="grey">
     <v-toolbar-title>Thomas A. Mendez</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn class="subHeaderButton" text>
-      <v-subheader>
-        <router-link to="/about">About</router-link>
-      </v-subheader>
+    <v-btn class="subHeaderButton" to="/about">
+      <v-subheader> About </v-subheader>
     </v-btn>
-    <v-btn class="subHeaderButton" text>
-      <v-subheader>
-        <router-link to="/work">Work</router-link>
-      </v-subheader>
+    <v-btn class="subHeaderButton" to="/work">
+      <v-subheader> Work </v-subheader>
     </v-btn>
-    <v-btn class="subHeaderButton" text>
-      <v-subheader>
-        <router-link to="/skillsTools">Skills &amp; Tools</router-link>
-      </v-subheader>
+    <v-btn class="subHeaderButton" to="/skillsTools">
+      <v-subheader> Skills &amp; Tools </v-subheader>
     </v-btn>
     <v-menu>
       <template #activator="{ props }">
@@ -35,11 +29,11 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn class="subHeaderButton" text>
-      <a :href="resume" target="_blank"> Resume </a>
+    <v-btn class="subHeaderButton" :href="resume" target="_blank">
+      Resume
     </v-btn>
-    <v-btn class="subHeaderButton" text>
-      <a :href="storybookLink" target="_blank"> Storybook </a>
+    <v-btn class="subHeaderButton" :href="storybookLink" target="_blank">
+      Storybook
     </v-btn>
   </v-toolbar>
 </template>
@@ -72,9 +66,6 @@ export default defineComponent({
 <style scoped>
 a {
   text-decoration: none;
-  color: inherit;
-}
-a:hover {
   color: inherit;
 }
 .v-toolbar-title {
