@@ -8,7 +8,12 @@
       </v-row>
       <v-row>
         <v-col class="ps-0">
-          <v-btn text flat icon>
+          <v-btn
+            flat
+            icon
+            href="https://www.linkedin.com/in/thomas-a-mendez"
+            target="_blank"
+          >
             <v-icon>mdi-linkedin</v-icon>
             <span class="iconify" data-icon="mdi:linkedin"></span>
           </v-btn>
@@ -19,7 +24,12 @@
       </v-row>
       <v-row>
         <v-col class="ps-0">
-          <v-btn text flat icon>
+          <v-btn
+            flat
+            icon
+            href="https://github.com/thomasmendez"
+            target="_blank"
+          >
             <v-icon>mdi-github</v-icon>
             <span class="iconify" data-icon="mdi:github"></span>
           </v-btn>
@@ -30,7 +40,12 @@
       </v-row>
       <v-row>
         <v-col class="ps-0">
-          <v-btn text flat icon>
+          <v-btn
+            flat
+            icon
+            href="mailto:thomasmendez01@gmail.com"
+            target="_blank"
+          >
             <v-icon>mdi-email</v-icon>
             <span class="iconify" data-icon="mdi:email"></span>
           </v-btn>
@@ -53,9 +68,9 @@ export default defineComponent({
 
 <style>
 a {
-  text-decoration: none !important;
+  text-decoration: none;
+  color: inherit;
 }
-
 a:hover {
   color: #800080;
 }
