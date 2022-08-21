@@ -1,4 +1,4 @@
-# vue-template-simple-site
+# personal-website-s3-vue
 
 ## Project setup
 ```
