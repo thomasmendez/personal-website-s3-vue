@@ -12,14 +12,14 @@ resource "aws_s3_bucket_acl" "bucketstg" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "bucketstg" {
   bucket = aws_s3_bucket.bucketstg.id
-  rule {
-    id = "cleanup"
-    filter {} # applies to all objects in bucket
-    status = "Enabled"
-    expiration {
-      days = 1
-    }
-  }
+  # rule {
+  #   id = "cleanup"
+  #   filter {} # applies to all objects in bucket
+  #   status = "Enabled"
+  #   expiration {
+  #     days = 1
+  #   }
+  # }
 }
 
 resource "aws_s3_bucket_policy" "bucketstg" {
