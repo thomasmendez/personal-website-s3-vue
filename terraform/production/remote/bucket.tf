@@ -10,17 +10,17 @@ resource "aws_s3_bucket_acl" "bucketprd" {
   acl    = "public-read"
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "bucketprd" {
-  bucket = aws_s3_bucket.bucketprd.id
-  # rule {
-  #   id = "cleanup"
-  #   filter {} # applies to all objects in bucket
-  #   status = "Enabled"
-  #   expiration {
-  #     days = 1
-  #   }
-  # }
-}
+# resource "aws_s3_bucket_lifecycle_configuration" "bucketprd" {
+#   bucket = aws_s3_bucket.bucketprd.id
+#   rule {
+#     id = "cleanup"
+#     filter {} # applies to all objects in bucket
+#     status = "Enabled"
+#     expiration {
+#       days = 1
+#     }
+#   }
+# }
 
 resource "aws_s3_bucket_policy" "bucketprd" {
   bucket = var.aws_bucket_name
