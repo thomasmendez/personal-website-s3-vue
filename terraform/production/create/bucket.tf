@@ -12,14 +12,14 @@ resource "aws_s3_bucket_acl" "bucketprd" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "bucketprd" {
   bucket = var.aws_bucket_name
-  rule {
-    id = "cleanup"
-    filter {} # applies to all objects in bucket
-    status = "Enabled"
-    expiration {
-      days = 1
-    }
-  }
+  # rule {
+  #   id = "cleanup"
+  #   filter {} # applies to all objects in bucket
+  #   status = "Enabled"
+  #   expiration {
+  #     days = 1
+  #   }
+  # }
 }
 
 resource "aws_s3_bucket_policy" "bucketprd" {
